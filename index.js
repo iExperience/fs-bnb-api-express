@@ -2,6 +2,9 @@ const express = require("express");
 const path = require("path");
 const logger = require("./src/utilities/middleware/logger");
 
+// connect to the db
+//const db = require("./src/database/database");
+
 //Init express:
 const app = express();
 

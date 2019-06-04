@@ -22,11 +22,10 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
   authService
-    .login(req.body)
-    .then(user => {
-      res.json(user);
-    })
-    .catch(err => {
+    .login(req.body).then(user => {
+      console.log("res:", user);
+      res.send(user);
+    }).catch(err => {
       res.status(400).json({ msg: err.message });
     });
 });

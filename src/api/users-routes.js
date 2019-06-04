@@ -1,14 +1,31 @@
 const express = require("express");
 const router = express.Router();
-var fs = require("fs");
+const fs = require("fs");
+const UserService = require("../services/user-service");
+
+const userService = new UserService();
 
 router.get("/", (req, res) => {
   //res.send('<h1>Hello World!</h1>');
-  fs.readFile("./src/data/data.json", function(err, data) {
+
+  //json file:
+
+  /*  fs.readFile("./src/data/data.json", function(err, data) {
     if (err) throw err;
     var parseData = JSON.parse(data);
     res.json(parseData.users);
-  });
+  }); */
+
+  //SQL DB:
+  userService
+    .getUsers()
+    .then(result => {
+      //var parseData = JSON.parse(result);
+      res.send(result);
+    })
+    .catch(err => {
+      res.status(400).json({ msg: err.message });
+    });
 });
 
 router.get("/:id", (req, res) => {
@@ -132,7 +149,6 @@ router.get("/delete/:id", (req, res) => {
     var error = false;
     if (err) {
       error = true;
-      throw err;
     }
     var parseData = JSON.parse(data);
     parseData.users = parseData.users.filter(user => user.id === req.params.id);
@@ -141,7 +157,6 @@ router.get("/delete/:id", (req, res) => {
     ) {
       if (err) {
         error = true;
-        throw err;
       }
       res.json({ status: "User deleted" });
     });
